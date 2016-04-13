@@ -8,6 +8,8 @@
 #include "./User.h"
 #include "./Irc.h"
 
+#define LINES_PER_CHAT_WINDOW 27
+
 using namespace std;
 
 void setUserInformation(User *user);
@@ -29,34 +31,40 @@ int main(int argc, char* argv[]){
   Socket sock(host, port);
   sock.connectToServer();
 
+
+
   Irc irc;
   irc.setSocket(&sock);
   irc.setUser(&user);
   irc.registerUser();
 
   // Remove
-  irc.join("#test");
-
-  IrcMessage irc_message;
+  // irc.parseAndExecute("/join #test\n");
+  // irc.changeChannel("#test");
+  // irc.join("#test");
 
   Screen screen;
   string msg;
 
   for(;;){
+    // receive input from server
     if(irc.isMessage()){
-      irc_message = irc.receiveIrcMessage();
-
-      if(irc_message.getCommand() == "PRIVMSG"){
-        screen.printUserMessage(irc_message.getNick(), irc_message.getParams()[1]);
-      }
+      irc.receiveAndExecuteMessage();
     }
 
+    // check std input
     if(StdioHelper::isInput()){
       if(screen.inputGetCh() == '\n'){
         msg = screen.popInputWindowContent();
-        screen.printUserMessage(user.getNick(), msg);
-        irc.privateMessage("#test", msg);
+        irc.parseAndExecute(msg);
       }
+    }
+
+    // print current channel
+    screen.clearChatWindow();
+    vector<string> active_channel_messages = user.getActiveChannelMessages(28);
+    for(int i = 0; i < active_channel_messages.size(); i++){
+      screen.printToChat(active_channel_messages[i]);
     }
 
     usleep(100000);

@@ -40,10 +40,8 @@ void Screen::printToInput(string str){
 
 char Screen::inputGetCh(){
   char ch = wgetch(this->input_window);
-  if(ch != '\n'){
-    this->input_window_content += ch;
-    wrefresh(this->input_window);
-  }
+  this->input_window_content += ch;
+  wrefresh(this->input_window);
   return ch;
 }
 
@@ -55,6 +53,11 @@ void Screen::clearInputWindowContent(){
   this->input_window_content = "";
   werase(this->input_window);
   wrefresh(this->input_window);
+}
+
+void Screen::clearChatWindow(){
+  werase(this->chat_window);
+  wrefresh(this->chat_window);
 }
 
 void Screen::printUserMessage(string nick, string msg){

@@ -21,6 +21,9 @@ class Irc{
     void registerUser();
     void join(string str);
     void privateMessage(string params, string msg);
+    void parseAndExecute(string msg);
+    void changeChannel(string title);
+    void receiveAndExecuteMessage();
     ~Irc();
 };
 

@@ -28,6 +28,7 @@ class Screen {
     void clearInputWindowContent();
     void printUserMessage(string nick, string msg);
     string popInputWindowContent();
+    void clearChatWindow();
 };
 
 #endif

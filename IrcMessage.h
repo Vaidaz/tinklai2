@@ -2,9 +2,9 @@
 #define IRC_MESSAGE_H
 
 #include <iostream>
-#include <sstream>
 #include <vector>
 using namespace std;
+#include "./StringUtils.h"
 
 class IrcMessage {
   private:
@@ -27,6 +27,7 @@ class IrcMessage {
     string getNick();
     vector<string> getParams();
     void parse();
+    string getParmsString();
     ~IrcMessage();
 };
 
